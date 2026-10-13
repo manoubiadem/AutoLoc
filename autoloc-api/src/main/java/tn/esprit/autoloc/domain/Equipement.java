@@ -1,5 +1,5 @@
 package tn.esprit.autoloc.domain;
-
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,4 +16,9 @@ public class Equipement {
     private Long idEquipement;
 
     private String libelle;
+    @ManyToMany(
+            mappedBy = "equipements",
+            fetch = FetchType.LAZY
+    )
+    private List<Vehicule> vehicules;
 }

@@ -22,4 +22,6 @@ public class Maintenance {
     private LocalDate dateFin;
 
     private String description;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Vehicule vehicule;
 }

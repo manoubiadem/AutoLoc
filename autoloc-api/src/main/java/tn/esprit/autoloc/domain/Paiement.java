@@ -23,4 +23,6 @@ public class Paiement {
     private LocalDate datePaiement;
 
     private String modePaiement;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Contrat contrat;
 }

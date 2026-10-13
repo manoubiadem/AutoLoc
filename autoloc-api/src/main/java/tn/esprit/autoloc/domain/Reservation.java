@@ -22,4 +22,11 @@ public class Reservation {
     private LocalDate dateFin;
 
     private String statut;
+
+    @ManyToOne
+    private Vehicule vehicule;
+    @ManyToOne
+    private Client client;
+    @OneToOne
+    private Contrat contrat;
 }

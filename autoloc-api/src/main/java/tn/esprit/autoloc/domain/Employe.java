@@ -20,4 +20,6 @@ public class Employe {
     private String prenom;
 
     private String role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Agence agence;
 }
