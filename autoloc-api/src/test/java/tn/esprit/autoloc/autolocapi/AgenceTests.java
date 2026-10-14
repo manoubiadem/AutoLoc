@@ -4,7 +4,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import tn.esprit.autoloc.domain.Agence;
@@ -12,15 +16,12 @@ import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.domain.CategorieVehicule;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.repository.IAgenceRepository;
-
+import tn.esprit.autoloc.service.IAgenceService;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -31,6 +32,9 @@ public class AgenceTests {
 
     @Autowired
     private IAgenceRepository fullAgenceRepository;
+
+    @Autowired
+    private IAgenceService agenceService;
 
     private void addAgence(CrudRepository<Agence, Long> repository) {
 
@@ -64,6 +68,7 @@ public class AgenceTests {
 
         repository.save(agence);
     }
+
     @Test
     public void basicAddAgence() {
         addAgence(basicAgenceRepository);
@@ -73,7 +78,6 @@ public class AgenceTests {
     public void fullAddAgence() {
         addAgence(fullAgenceRepository);
     }
-
 
     private void loadAgence(CrudRepository<Agence, Long> repository, String type) {
 
@@ -104,6 +108,7 @@ public class AgenceTests {
 
         fail(sb.toString());
     }
+
     @Test
     public void basicLoadAgence() {
         loadAgence(basicAgenceRepository, "Basic Repository");
@@ -113,6 +118,7 @@ public class AgenceTests {
     public void fullLoadAgence() {
         loadAgence(fullAgenceRepository, "Full Repository");
     }
+
     @Test
     public void loadSortedAgences() {
 
@@ -132,6 +138,7 @@ public class AgenceTests {
 
         System.out.println(sb.toString());
     }
+
     @Test
     public void loadPagedAgences() {
 
@@ -143,6 +150,7 @@ public class AgenceTests {
                                 Sort.by(Sort.Direction.DESC, "idAgence")
                         )
                 );
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("Nombre total de pages : ")
@@ -162,7 +170,26 @@ public class AgenceTests {
 
         System.out.println(sb.toString());
     }
+
+    @Test
+    public void createAgence() {
+
+        Agence agence = new Agence();
+        agence.setNom("Agence Service");
+        agence.setAdresse("10 Rue Tunis");
+        agence.setTelephone("71234567");
+        agence.setVille("Tunis");
+
+        Agence result = agenceService.create(agence);
+
+        System.out.println(
+                result.getIdAgence()
+                        + " | "
+                        + result.getNom()
+        );
+    }
 }
 
+@Repository
 interface AgenceRepositoryMock extends CrudRepository<Agence, Long> {
 }
