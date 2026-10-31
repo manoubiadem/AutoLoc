@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "vehicule")
 @Getter
@@ -37,6 +38,7 @@ public class Vehicule {
     private StatutVehicule statut;
 
     @ManyToOne
+    @JsonBackReference("agence-vehicules")
     private Agence agence;
 
     @OneToMany(

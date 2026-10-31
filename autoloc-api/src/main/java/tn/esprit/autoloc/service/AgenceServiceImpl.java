@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.repository.IVehiculeRepository;
 
 @Service
 @Primary
@@ -12,8 +13,14 @@ public class AgenceServiceImpl
         extends GenericServiceImpl<Agence, Long>
         implements IAgenceService {
 
-    public AgenceServiceImpl(IAgenceRepository agenceRepository) {
+    private final IVehiculeRepository vehiculeRepository;
+
+    public AgenceServiceImpl(
+            IAgenceRepository agenceRepository,
+            IVehiculeRepository vehiculeRepository) {
+
         super(agenceRepository);
+        this.vehiculeRepository = vehiculeRepository;
     }
 
     @Override
@@ -50,5 +57,21 @@ public class AgenceServiceImpl
 
         return agence.getVehicules() != null
                 && !agence.getVehicules().isEmpty();
+    }
+    @Override
+    public void deleteById(Long id) {
+
+        Agence agence = findById(id);
+
+        if (agence.getVehicules() != null) {
+
+            agence.getVehicules().forEach(
+                    vehicule -> vehicule.setAgence(null)
+            );
+
+            vehiculeRepository.saveAll(agence.getVehicules());
+        }
+
+        super.deleteById(id);
     }
 }
