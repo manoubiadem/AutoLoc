@@ -3,7 +3,10 @@ package tn.esprit.autoloc.service;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.Utils;
+import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
+import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.io.RapportFactory;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
 
@@ -11,20 +14,30 @@ import tn.esprit.autoloc.repository.IVehiculeRepository;
 @Primary
 public class AgenceServiceImpl
         extends GenericServiceImpl<Agence, Long>
-        implements IAgenceService {
+        implements IAgenceService, ISimulationAgenceService {
 
     private final IVehiculeRepository vehiculeRepository;
+    private final IVehiculeService vehiculeService;
+    private final RapportFactory rapportFactory;
 
     public AgenceServiceImpl(
             IAgenceRepository agenceRepository,
-            IVehiculeRepository vehiculeRepository) {
+            IVehiculeRepository vehiculeRepository,
+            IVehiculeService vehiculeService,
+            RapportFactory rapportFactory) {
 
         super(agenceRepository);
+
         this.vehiculeRepository = vehiculeRepository;
+        this.vehiculeService = vehiculeService;
+        this.rapportFactory = rapportFactory;
     }
 
     @Override
-    public boolean check(Agence agence, boolean isNew) {
+    public boolean check(
+            Agence agence,
+            boolean isNew) {
+
         return agence != null
                 && Utils.isNotEmpty(agence.getNom())
                 && Utils.isNotEmpty(agence.getVille())
@@ -43,7 +56,10 @@ public class AgenceServiceImpl
     }
 
     @Override
-    protected void setFields(Agence source, Agence target) {
+    protected void setFields(
+            Agence source,
+            Agence target) {
+
         target.setNom(source.getNom());
         target.setVille(source.getVille());
         target.setAdresse(source.getAdresse());
@@ -53,11 +69,13 @@ public class AgenceServiceImpl
 
     @Override
     public boolean hasVehicules(Long id) {
+
         Agence agence = findById(id);
 
         return agence.getVehicules() != null
                 && !agence.getVehicules().isEmpty();
     }
+
     @Override
     public void deleteById(Long id) {
 
@@ -69,9 +87,33 @@ public class AgenceServiceImpl
                     vehicule -> vehicule.setAgence(null)
             );
 
-            vehiculeRepository.saveAll(agence.getVehicules());
+            vehiculeRepository.saveAll(
+                    agence.getVehicules()
+            );
         }
 
         super.deleteById(id);
+    }
+
+    @Override
+    public String simuler(
+            Agence agence,
+            int nbJours,
+            VehiculeOffre offre) {
+
+        double total = 0;
+
+        for (Vehicule vehicule : agence.getVehicules()) {
+
+            total += vehiculeService.calculTarif(
+                    vehicule,
+                    nbJours,
+                    offre
+            );
+        }
+
+        return rapportFactory
+                .creerRapport()
+                .generer(agence, total);
     }
 }
