@@ -1,7 +1,9 @@
+
 package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employe")
@@ -20,6 +22,8 @@ public class Employe {
     private String prenom;
 
     private String role;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Agence agence;
 }

@@ -15,6 +15,9 @@ public class BasicAgenceServiceImpl implements IAgenceService {
 
     private final IAgenceRepository agenceRepository;
 
+    private final AgenceServiceImpl agenceServiceImpl;
+
+
     @Override
     public boolean check(Agence agence, boolean isNew) {
 
@@ -115,4 +118,16 @@ public class BasicAgenceServiceImpl implements IAgenceService {
     public boolean hasVehicules(Long id) {
         return false;
     }
+
+    @Override
+    public Agence modifierAgenceAvecEmployes(
+            Long idAgence,
+            Agence donnees) {
+
+        return agenceServiceImpl.modifierAgenceAvecEmployes(
+                idAgence,
+                donnees
+        );
+    }
+
 }

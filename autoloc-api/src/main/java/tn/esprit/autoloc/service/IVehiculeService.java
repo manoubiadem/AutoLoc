@@ -1,3 +1,4 @@
+
 package tn.esprit.autoloc.service;
 
 import tn.esprit.autoloc.calcul.VehiculeOffre;
@@ -9,5 +10,11 @@ public interface IVehiculeService
     double calculTarif(
             Vehicule vehicule,
             int nbJours,
-            VehiculeOffre offre);
+            VehiculeOffre offre
+    );
+
+    void desaffecterAgence(Long idVehicule);
+
+    void affecterAgence(Long idVehicule, Long idAgence);
+    void affecterEquipement(Long idVehicule, Long idEquipement);
 }
