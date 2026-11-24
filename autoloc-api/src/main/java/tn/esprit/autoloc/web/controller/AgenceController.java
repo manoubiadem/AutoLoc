@@ -4,7 +4,6 @@ package tn.esprit.autoloc.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import lombok.RequiredArgsConstructor;
@@ -42,16 +41,14 @@ public class AgenceController {
     }
 
     @Operation(summary = "Consulter une agence")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Agence trouvée"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Agence introuvable"
-            )
-    })
+    @ApiResponse(
+            responseCode = "200",
+            description = "Agence trouvée"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Agence introuvable"
+    )
     @GetMapping("/{id}")
     public Agence findById(
             @Parameter(description = "Identifiant")
@@ -61,16 +58,14 @@ public class AgenceController {
     }
 
     @Operation(summary = "Ajouter une agence")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Agence ajoutée"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Erreur lors de l'ajout"
-            )
-    })
+    @ApiResponse(
+            responseCode = "201",
+            description = "Agence ajoutée"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Erreur lors de l'ajout"
+    )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Agence create(
@@ -80,16 +75,14 @@ public class AgenceController {
     }
 
     @Operation(summary = "Modifier une agence")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Agence modifiée"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Agence introuvable"
-            )
-    })
+    @ApiResponse(
+            responseCode = "200",
+            description = "Agence modifiée"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Agence introuvable"
+    )
     @PutMapping("/{id}")
     public Agence update(
             @Parameter(description = "Identifiant")
@@ -100,16 +93,14 @@ public class AgenceController {
     }
 
     @Operation(summary = "Supprimer une agence")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Agence supprimée"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Agence introuvable"
-            )
-    })
+    @ApiResponse(
+            responseCode = "204",
+            description = "Agence supprimée"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Agence introuvable"
+    )
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(

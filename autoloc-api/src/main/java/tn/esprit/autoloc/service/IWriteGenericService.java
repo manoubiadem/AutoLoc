@@ -1,10 +1,11 @@
+
 package tn.esprit.autoloc.service;
 
-public interface IWriteGenericService<T, ID> {
+public interface IWriteGenericService<T, I> {
 
     T create(T entity);
 
-    T update(ID id, T entity);
+    T update(I id, T entity);
 
-    void deleteById(ID id);
+    void deleteById(I id);
 }

@@ -162,7 +162,11 @@ public class AgenceServiceImpl
         }
 
         // Calculer l'effectif de l'agence
-        int nombreEmployes =
+
+        // Atelier 10 : anomalie volontaire S1854
+        int nombreEmployes = 0;
+
+        nombreEmployes =
                 agence.getEmployes() == null
                         ? 0
                         : agence.getEmployes().size();

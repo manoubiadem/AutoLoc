@@ -19,6 +19,8 @@ import tn.esprit.autoloc.service.IVehiculeService;
 
 import java.util.List;
 
+
+
 @Tag(name = "Vehicules", description = "Gestion des véhicules")
 @RestController
 @RequestMapping("/vehicules")
@@ -30,6 +32,9 @@ public class VehiculeController {
     @Operation(summary = "Lister les véhicules")
     @GetMapping
     public List<Vehicule> findAll() {
+
+
+
         return vehiculeService.findAll();
     }
 
@@ -90,5 +95,4 @@ public class VehiculeController {
                 idEquipement
         );
     }
-
 }

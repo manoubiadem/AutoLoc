@@ -1,8 +1,9 @@
+
 package tn.esprit.autoloc.calcul;
 
 import org.springframework.stereotype.Component;
 
-@Component("LONGUE_DUREE")
+@Component("longueDuree")
 public class LongueDureeTarifStrategy implements TarifStrategy {
 
     @Override

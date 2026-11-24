@@ -1,3 +1,4 @@
+
 package tn.esprit.autoloc.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -5,18 +6,18 @@ import tn.esprit.autoloc.exception.ResourceNotFoundException;
 
 import java.util.List;
 
-public abstract class GenericServiceImpl<T, ID>
-        implements IGenericService<T, ID> {
+public abstract class GenericServiceImpl<T, I>
+        implements IGenericService<T, I> {
 
-    protected final JpaRepository<T, ID> repository;
+    protected final JpaRepository<T, I> repository;
 
-    protected GenericServiceImpl(JpaRepository<T, ID> repository) {
+    protected GenericServiceImpl(JpaRepository<T, I> repository) {
         this.repository = repository;
     }
 
     protected abstract String getEntityName();
 
-    protected abstract ID getId(T entity);
+    protected abstract I getId(T entity);
 
     protected abstract void setFields(T source, T target);
 
@@ -39,7 +40,7 @@ public abstract class GenericServiceImpl<T, ID>
     }
 
     @Override
-    public T findById(ID id) {
+    public T findById(I id) {
         return repository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
@@ -55,7 +56,7 @@ public abstract class GenericServiceImpl<T, ID>
     }
 
     @Override
-    public T update(ID id, T entity) {
+    public T update(I id, T entity) {
 
         T existingEntity = findById(id);
 
@@ -71,7 +72,7 @@ public abstract class GenericServiceImpl<T, ID>
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(I id) {
 
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException(

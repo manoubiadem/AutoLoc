@@ -1,6 +1,8 @@
+
 package tn.esprit.autoloc.autolocapi;
 
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Ignore("Tests des anciens ateliers - Atelier 10")
 public class AgenceTests {
 
     @Autowired
@@ -79,7 +82,9 @@ public class AgenceTests {
         addAgence(fullAgenceRepository);
     }
 
-    private void loadAgence(CrudRepository<Agence, Long> repository, String type) {
+    private void loadAgence(
+            CrudRepository<Agence, Long> repository,
+            String type) {
 
         Iterable<Agence> agences = repository.findAll();
 

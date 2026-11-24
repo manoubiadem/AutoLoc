@@ -1,18 +1,15 @@
-
 package tn.esprit.autoloc.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tn.esprit.autoloc.calcul.TarifStrategy;
 import tn.esprit.autoloc.calcul.VehiculeOffre;
-
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.Equipement;
 import tn.esprit.autoloc.domain.Vehicule;
-
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
-
 import tn.esprit.autoloc.repository.IAgenceRepository;
 import tn.esprit.autoloc.repository.IEquipementRepository;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
@@ -24,6 +21,9 @@ import java.util.Map;
 public class VehiculeServiceImpl
         extends GenericServiceImpl<Vehicule, Long>
         implements IVehiculeService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(VehiculeServiceImpl.class);
 
     private final Map<String, TarifStrategy> strategies;
     private final IAgenceRepository agenceRepository;
@@ -37,7 +37,6 @@ public class VehiculeServiceImpl
             Map<String, TarifStrategy> strategies) {
 
         super(repository);
-
         this.vehiculeRepository = repository;
         this.agenceRepository = agenceRepository;
         this.equipementRepository = equipementRepository;
@@ -61,7 +60,6 @@ public class VehiculeServiceImpl
 
     @Override
     protected void setFields(Vehicule source, Vehicule target) {
-
         target.setImmatriculation(source.getImmatriculation());
         target.setMarque(source.getMarque());
         target.setModele(source.getModele());
@@ -79,7 +77,22 @@ public class VehiculeServiceImpl
             int nbJours,
             VehiculeOffre offre) {
 
-        TarifStrategy strategy = strategies.get(offre.name());
+        // Atelier 10 - Correction du nom du bean
+        String nomBean = offre.name();
+
+        if ("LONGUE_DUREE".equals(nomBean)) {
+            nomBean = "longueDuree";
+        }
+
+        if ("WEEKEND".equals(nomBean)) {
+            nomBean = "weekend";
+        }
+
+        if ("STANDARD".equals(nomBean)) {
+            nomBean = "standard";
+        }
+
+        TarifStrategy strategy = strategies.get(nomBean);
 
         if (strategy == null) {
             throw new IllegalArgumentException(
@@ -96,9 +109,7 @@ public class VehiculeServiceImpl
     @Override
     @Transactional
     public void desaffecterAgence(Long idVehicule) {
-
         Vehicule vehicule = findById(idVehicule);
-
         vehicule.setAgence(null);
     }
 
@@ -117,7 +128,6 @@ public class VehiculeServiceImpl
                 );
 
         vehicule.setAgence(agence);
-
         vehiculeRepository.save(vehicule);
     }
 
@@ -150,7 +160,7 @@ public class VehiculeServiceImpl
     @Transactional
     public void deleteById(Long id) {
 
-        System.out.println(">>> SUPPRESSION VEHICULE : " + id);
+        logger.info(">>> SUPPRESSION VEHICULE : {}", id);
 
         Vehicule vehicule = findById(id);
 
@@ -158,7 +168,6 @@ public class VehiculeServiceImpl
         Agence agence = vehicule.getAgence();
 
         if (agence != null) {
-
             if (agence.getVehicules() != null) {
                 agence.getVehicules().removeIf(
                         v -> id.equals(v.getIdVehicule())
@@ -176,9 +185,7 @@ public class VehiculeServiceImpl
 
         boolean existe = vehiculeRepository.existsById(id);
 
-        System.out.println(
-                ">>> EXISTE APRES FLUSH : " + existe
-        );
+        logger.info(">>> EXISTE APRES FLUSH : {}", existe);
 
         if (existe) {
             throw new IllegalStateException(

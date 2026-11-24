@@ -1,3 +1,4 @@
+
 package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ public class BasicAgenceServiceImpl implements IAgenceService {
     private final IAgenceRepository agenceRepository;
 
     private final AgenceServiceImpl agenceServiceImpl;
-
 
     @Override
     public boolean check(Agence agence, boolean isNew) {
@@ -58,9 +58,10 @@ public class BasicAgenceServiceImpl implements IAgenceService {
                 );
     }
 
+    // Atelier 10 - Correction S1168
     @Override
     public List<Agence> findAll() {
-        return null;
+        return agenceRepository.findAll();
     }
 
     @Override
@@ -129,5 +130,4 @@ public class BasicAgenceServiceImpl implements IAgenceService {
                 donnees
         );
     }
-
 }

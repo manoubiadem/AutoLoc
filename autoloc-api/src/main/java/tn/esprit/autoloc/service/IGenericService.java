@@ -1,7 +1,8 @@
+
 package tn.esprit.autoloc.service;
 
-public interface IGenericService<T, ID>
+public interface IGenericService<T, I>
         extends ICheckGenericService<T>,
-        IReadGenericService<T, ID>,
-        IWriteGenericService<T, ID> {
+        IReadGenericService<T, I>,
+        IWriteGenericService<T, I> {
 }
