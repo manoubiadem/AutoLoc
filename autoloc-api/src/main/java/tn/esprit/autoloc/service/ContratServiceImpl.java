@@ -33,7 +33,5 @@ public class ContratServiceImpl
         target.setDateSignature(source.getDateSignature());
         target.setMontantTotal(source.getMontantTotal());
         target.setValide(source.isValide());
-        target.setPaiements(source.getPaiements());
-        target.setReservation(source.getReservation());
     }
 }

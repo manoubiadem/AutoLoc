@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.service.IEmployeService;
+import tn.esprit.autoloc.web.dto.EmployeRequest;
 
 import java.util.List;
 
@@ -33,14 +34,14 @@ public class EmployeController {
     @Operation(summary = "Ajouter un employé")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employe create(@RequestBody Employe employe) {
-        return employeService.create(employe);
+    public Employe create(@RequestBody EmployeRequest request) {
+        return employeService.create(request.toEntity());
     }
 
     @Operation(summary = "Modifier un employé")
     @PutMapping("/{id}")
-    public Employe update(@PathVariable Long id, @RequestBody Employe employe) {
-        return employeService.update(id, employe);
+    public Employe update(@PathVariable Long id, @RequestBody EmployeRequest request) {
+        return employeService.update(id, request.toEntity());
     }
 
     @Operation(summary = "Supprimer un employé")

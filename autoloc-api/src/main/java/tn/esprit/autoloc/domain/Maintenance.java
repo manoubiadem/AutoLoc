@@ -22,6 +22,7 @@ public class Maintenance {
     private LocalDate dateFin;
 
     private String description;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    // Une maintenance reference un vehicule existant sans en creer un en cascade.
+    @ManyToOne
     private Vehicule vehicule;
 }

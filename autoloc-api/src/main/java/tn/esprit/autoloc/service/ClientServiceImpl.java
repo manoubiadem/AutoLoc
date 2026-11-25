@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Client;
 import tn.esprit.autoloc.repository.IClientRepository;
 
+import java.time.LocalDate;
+
 @Service
 public class ClientServiceImpl
         extends GenericServiceImpl<Client, Long>
@@ -11,6 +13,12 @@ public class ClientServiceImpl
 
     public ClientServiceImpl(IClientRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public Client create(Client client) {
+        client.setDateInscription(LocalDate.now());
+        return super.create(client);
     }
 
     @Override
@@ -35,7 +43,5 @@ public class ClientServiceImpl
         target.setEmail(source.getEmail());
         target.setTelephone(source.getTelephone());
         target.setNumPermis(source.getNumPermis());
-        target.setDateInscription(source.getDateInscription());
-        target.setReservations(source.getReservations());
     }
 }

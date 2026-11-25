@@ -15,6 +15,8 @@ import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.service.IAgenceService;
 import tn.esprit.autoloc.service.ISimulationAgenceService;
+import tn.esprit.autoloc.web.dto.AgenceRequest;
+import tn.esprit.autoloc.web.dto.AgenceAvecEmployesRequest;
 
 import java.util.List;
 
@@ -69,9 +71,9 @@ public class AgenceController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Agence create(
-            @RequestBody Agence agence) {
+            @RequestBody AgenceRequest request) {
 
-        return agenceService.create(agence);
+        return agenceService.create(request.toEntity());
     }
 
     @Operation(summary = "Modifier une agence")
@@ -87,9 +89,9 @@ public class AgenceController {
     public Agence update(
             @Parameter(description = "Identifiant")
             @PathVariable Long id,
-            @RequestBody Agence agence) {
+            @RequestBody AgenceRequest request) {
 
-        return agenceService.update(id, agence);
+        return agenceService.update(id, request.toEntity());
     }
 
     @Operation(summary = "Supprimer une agence")
@@ -133,11 +135,11 @@ public class AgenceController {
     @PutMapping("/{id}/avec-employes")
     public Agence modifierAgenceAvecEmployes(
             @PathVariable Long id,
-            @RequestBody Agence agence) {
+            @RequestBody AgenceAvecEmployesRequest request) {
 
         return agenceService.modifierAgenceAvecEmployes(
                 id,
-                agence
+                request.toEntity()
         );
     }
 }

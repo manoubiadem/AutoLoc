@@ -3,6 +3,7 @@ package tn.esprit.autoloc.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tn.esprit.autoloc.domain.Employe;
+import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IEmployeRepository;
 
@@ -87,6 +88,28 @@ class EmployeServiceImplTest {
         when(repository.findById(1L)).thenReturn(Optional.of(mock(Employe.class)));
         assertThrows(IllegalArgumentException.class, () -> service.update(1L, null));
         verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updatePreserveIdentifiantEtAgence() {
+        Employe existing = new Employe();
+        existing.setIdEmploye(1L);
+        Agence agence = new Agence();
+        existing.setAgence(agence);
+        Employe source = new Employe();
+        source.setIdEmploye(999L);
+        source.setAgence(new Agence());
+        source.setNom("Nom modifie");
+        source.setRole("Responsable location");
+        when(repository.findById(1L)).thenReturn(Optional.of(existing));
+        when(repository.save(existing)).thenReturn(existing);
+
+        assertSame(existing, service.update(1L, source));
+
+        assertEquals("Nom modifie", existing.getNom());
+        assertEquals("Responsable location", existing.getRole());
+        assertEquals(1L, existing.getIdEmploye());
+        assertSame(agence, existing.getAgence());
     }
 
     @Test

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.service.IReservationService;
+import tn.esprit.autoloc.web.dto.ReservationRequest;
+import tn.esprit.autoloc.web.mapper.RelationRequestMapper;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class ReservationController {
 
     private final IReservationService reservationService;
+    private final RelationRequestMapper requestMapper;
 
     @Operation(summary = "Lister les réservations")
     @GetMapping
@@ -33,14 +36,14 @@ public class ReservationController {
     @Operation(summary = "Ajouter une réservation")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reservation create(@RequestBody Reservation reservation) {
-        return reservationService.create(reservation);
+    public Reservation create(@RequestBody ReservationRequest request) {
+        return reservationService.create(requestMapper.toEntity(request));
     }
 
     @Operation(summary = "Modifier une réservation")
     @PutMapping("/{id}")
-    public Reservation update(@PathVariable Long id, @RequestBody Reservation reservation) {
-        return reservationService.update(id, reservation);
+    public Reservation update(@PathVariable Long id, @RequestBody ReservationRequest request) {
+        return reservationService.update(id, requestMapper.toEntity(request));
     }
 
     @Operation(summary = "Supprimer une réservation")

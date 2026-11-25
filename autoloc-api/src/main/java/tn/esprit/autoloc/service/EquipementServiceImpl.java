@@ -31,6 +31,5 @@ public class EquipementServiceImpl
     @Override
     protected void setFields(Equipement source, Equipement target) {
         target.setLibelle(source.getLibelle());
-        target.setVehicules(source.getVehicules());
     }
 }

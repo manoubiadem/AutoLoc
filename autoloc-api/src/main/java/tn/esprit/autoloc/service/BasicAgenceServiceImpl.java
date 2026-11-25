@@ -93,10 +93,6 @@ public class BasicAgenceServiceImpl implements IAgenceService {
                 agence.getTelephone()
         );
 
-        existingAgence.setVehicules(
-                agence.getVehicules()
-        );
-
         return agenceRepository.save(
                 existingAgence
         );

@@ -69,7 +69,6 @@ public class AgenceServiceImpl
         target.setVille(source.getVille());
         target.setAdresse(source.getAdresse());
         target.setTelephone(source.getTelephone());
-        target.setVehicules(source.getVehicules());
     }
 
     @Override

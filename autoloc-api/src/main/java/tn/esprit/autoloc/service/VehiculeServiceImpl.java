@@ -66,9 +66,6 @@ public class VehiculeServiceImpl
         target.setCategorie(source.getCategorie());
         target.setTarifJournalier(source.getTarifJournalier());
         target.setStatut(source.getStatut());
-        target.setAgence(source.getAgence());
-        target.setReservations(source.getReservations());
-        target.setEquipements(source.getEquipements());
     }
 
     @Override

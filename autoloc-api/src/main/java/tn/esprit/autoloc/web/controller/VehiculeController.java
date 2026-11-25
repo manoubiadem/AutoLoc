@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.service.IVehiculeService;
+import tn.esprit.autoloc.web.dto.VehiculeRequest;
 
 import java.util.List;
 
@@ -47,17 +48,17 @@ public class VehiculeController {
     @Operation(summary = "Ajouter un véhicule")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Vehicule create(@RequestBody Vehicule vehicule) {
-        return vehiculeService.create(vehicule);
+    public Vehicule create(@RequestBody VehiculeRequest request) {
+        return vehiculeService.create(request.toEntity());
     }
 
     @Operation(summary = "Modifier un véhicule")
     @PutMapping("/{id}")
     public Vehicule update(
             @PathVariable Long id,
-            @RequestBody Vehicule vehicule) {
+            @RequestBody VehiculeRequest request) {
 
-        return vehiculeService.update(id, vehicule);
+        return vehiculeService.update(id, request.toEntity());
     }
 
     @Operation(summary = "Supprimer un véhicule")

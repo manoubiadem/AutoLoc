@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Equipement;
 import tn.esprit.autoloc.service.IEquipementService;
+import tn.esprit.autoloc.web.dto.EquipementRequest;
 
 import java.util.List;
 
@@ -33,14 +34,14 @@ public class EquipementController {
     @Operation(summary = "Ajouter un équipement")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Equipement create(@RequestBody Equipement equipement) {
-        return equipementService.create(equipement);
+    public Equipement create(@RequestBody EquipementRequest request) {
+        return equipementService.create(request.toEntity());
     }
 
     @Operation(summary = "Modifier un équipement")
     @PutMapping("/{id}")
-    public Equipement update(@PathVariable Long id, @RequestBody Equipement equipement) {
-        return equipementService.update(id, equipement);
+    public Equipement update(@PathVariable Long id, @RequestBody EquipementRequest request) {
+        return equipementService.update(id, request.toEntity());
     }
 
     @Operation(summary = "Supprimer un équipement")

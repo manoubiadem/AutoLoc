@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Contrat;
 import tn.esprit.autoloc.service.IContratService;
+import tn.esprit.autoloc.web.dto.ContratRequest;
 
 import java.util.List;
 
@@ -33,14 +34,14 @@ public class ContratController {
     @Operation(summary = "Ajouter un contrat")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Contrat create(@RequestBody Contrat contrat) {
-        return contratService.create(contrat);
+    public Contrat create(@RequestBody ContratRequest request) {
+        return contratService.create(request.toEntity());
     }
 
     @Operation(summary = "Modifier un contrat")
     @PutMapping("/{id}")
-    public Contrat update(@PathVariable Long id, @RequestBody Contrat contrat) {
-        return contratService.update(id, contrat);
+    public Contrat update(@PathVariable Long id, @RequestBody ContratRequest request) {
+        return contratService.update(id, request.toEntity());
     }
 
     @Operation(summary = "Supprimer un contrat")

@@ -7,6 +7,7 @@ import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.Equipement;
 import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 import tn.esprit.autoloc.repository.IEquipementRepository;
@@ -94,6 +95,34 @@ class VehiculeServiceImplTest {
         when(repository.save(existing)).thenReturn(existing);
         assertSame(existing, service.update(7L, source));
         verify(existing).setImmatriculation("100 TU 111");
+    }
+
+    @Test
+    void updatePreserveIdentifiantAgenceReservationsEtEquipements() {
+        Vehicule existing = new Vehicule();
+        existing.setIdVehicule(7L);
+        Agence agence = new Agence();
+        List<Reservation> reservations = List.of(new Reservation());
+        List<Equipement> equipements = List.of(new Equipement());
+        existing.setAgence(agence);
+        existing.setReservations(reservations);
+        existing.setEquipements(equipements);
+        Vehicule source = new Vehicule();
+        source.setIdVehicule(999L);
+        source.setImmatriculation("100 TU 111");
+        source.setAgence(new Agence());
+        source.setReservations(List.of(new Reservation()));
+        source.setEquipements(List.of(new Equipement()));
+        when(repository.findById(7L)).thenReturn(Optional.of(existing));
+        when(repository.save(existing)).thenReturn(existing);
+
+        assertSame(existing, service.update(7L, source));
+
+        assertEquals("100 TU 111", existing.getImmatriculation());
+        assertEquals(7L, existing.getIdVehicule());
+        assertSame(agence, existing.getAgence());
+        assertSame(reservations, existing.getReservations());
+        assertSame(equipements, existing.getEquipements());
     }
 
     @Test

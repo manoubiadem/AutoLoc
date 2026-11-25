@@ -3,6 +3,7 @@ package tn.esprit.autoloc.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tn.esprit.autoloc.domain.Equipement;
+import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IEquipementRepository;
 
@@ -87,6 +88,26 @@ class EquipementServiceImplTest {
         when(repository.findById(1L)).thenReturn(Optional.of(mock(Equipement.class)));
         assertThrows(IllegalArgumentException.class, () -> service.update(1L, null));
         verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updatePreserveIdentifiantEtVehicules() {
+        Equipement existing = new Equipement();
+        existing.setIdEquipement(1L);
+        List<Vehicule> vehicules = List.of(new Vehicule());
+        existing.setVehicules(vehicules);
+        Equipement source = new Equipement();
+        source.setIdEquipement(999L);
+        source.setVehicules(List.of(new Vehicule()));
+        source.setLibelle("GPS");
+        when(repository.findById(1L)).thenReturn(Optional.of(existing));
+        when(repository.save(existing)).thenReturn(existing);
+
+        assertSame(existing, service.update(1L, source));
+
+        assertEquals("GPS", existing.getLibelle());
+        assertEquals(1L, existing.getIdEquipement());
+        assertSame(vehicules, existing.getVehicules());
     }
 
     @Test

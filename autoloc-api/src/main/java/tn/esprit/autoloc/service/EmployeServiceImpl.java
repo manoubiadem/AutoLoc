@@ -33,6 +33,5 @@ public class EmployeServiceImpl
         target.setNom(source.getNom());
         target.setPrenom(source.getPrenom());
         target.setRole(source.getRole());
-        target.setAgence(source.getAgence());
     }
 }
